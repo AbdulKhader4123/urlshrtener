@@ -11,7 +11,6 @@ mongoose.connect(`mongodb+srv://abuka:${process.env.passkey}@cluster0.ltdpswl.mo
   useNewUrlParser: true, useUnifiedTopology: true
 })
 
-app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/urls', async (req, res) => {
