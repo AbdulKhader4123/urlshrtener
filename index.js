@@ -11,7 +11,7 @@ const cors = require('cors');
 app.use(cors({
   origin: '*'
 }));
-mongoose.connect(`mongodb+srv://abuka:221bbakerstreet@cluster0.ltdpswl.mongodb.net/`, {
+mongoose.connect(`mongodb+srv://abuka:${process.env.passkey}@cluster0.ltdpswl.mongodb.net/`, {
   useNewUrlParser: true, useUnifiedTopology: true
 })
 
