@@ -18,19 +18,18 @@ mongoose.connect(`mongodb+srv://abuka:${process.env.passkey}@cluster0.ltdpswl.mo
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/urls', async (req, res) => {
-  const shortUrls = await ShortUrl.find({userId:req.query?.userId || ""},{'full':1, 'short':1, "createdAt": 1, "_id": 0}).sort({createdAt: -1})
+  const shortUrls = await ShortUrl.find({userId:req?.query?.userId || ""},{'full':1, 'short':1, "createdAt": 1, "_id": 0}).sort({createdAt: -1})
   res.send(shortUrls)
 })
 
 app.post('/shortUrls', async (req, res) => {
-  const userId = req.body.userId;
-  await ShortUrl.create({ full: req.body.fullUrl, userId })
-  const shortUrls = await ShortUrl.find({userId},{'full':1, 'short':1,"createdAt": 1, "_id": 0}).sort({createdAt: -1})
+  await ShortUrl.create({ full: req?.body?.fullUrl, userId:req?.body?.userId })
+  const shortUrls = await ShortUrl.find({userId:req?.body?.userId},{'full':1, 'short':1,"createdAt": 1, "_id": 0}).sort({createdAt: -1})
   res.send(shortUrls)
 })
 
 app.get('/:shortUrl', async (req, res) => {
-  const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl })
+  const shortUrl = await ShortUrl.findOne({ short: req?.params?.shortUrl })
   if (shortUrl == null) return res.sendStatus(404)
 
   shortUrl.clicks++
