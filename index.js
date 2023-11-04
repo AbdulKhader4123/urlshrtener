@@ -23,7 +23,7 @@ app.get('/urls', async (req, res) => {
 })
 
 app.post('/urls', async (req, res) => {
-  await ShortUrl.create({ full: req?.body?.fullUrl, userId:req?.body?.userId })
+  const shortUrl = await ShortUrl.create({ full: req?.body?.fullUrl, userId:req?.body?.userId })
   if (shortUrl == null) return res.sendStatus(400)
   res.sendStatus(200)
 })
