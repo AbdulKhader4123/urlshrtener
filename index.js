@@ -1,7 +1,7 @@
 const express = require('express')
 var bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-const ShortUrl = require('../models/shortUrl')
+const ShortUrl = require('./models/shortUrl')
 const app = express()
 app.use(bodyParser.urlencoded({
   extended: true
