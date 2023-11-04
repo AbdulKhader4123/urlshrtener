@@ -18,14 +18,14 @@ mongoose.connect(`mongodb+srv://abuka:${process.env.passkey}@cluster0.ltdpswl.mo
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/urls', async (req, res) => {
-  const shortUrls = await ShortUrl.find({userId:req.query?.userId},{'full':1, 'short':1, "createdAt": 1, "_id": 0}).sort({createdAt: -1})
+  const shortUrls = await ShortUrl.find({userId:req.query?.userId || ""},{'full':1, 'short':1, "createdAt": 1, "_id": 0}).sort({createdAt: -1})
   res.send(shortUrls)
 })
 
 app.post('/shortUrls', async (req, res) => {
   const userId = req.body.userId;
   await ShortUrl.create({ full: req.body.fullUrl, userId })
-  const shortUrls = await ShortUrl.find({},{'full':1, 'short':1,"createdAt": 1, "_id": 0}).sort({createdAt: -1})
+  const shortUrls = await ShortUrl.find({userId},{'full':1, 'short':1,"createdAt": 1, "_id": 0}).sort({createdAt: -1})
   res.send(shortUrls)
 })
 
