@@ -22,19 +22,15 @@ app.get('/urls', async (req, res) => {
   res.send(shortUrls)
 })
 
-app.post('/shortUrls', async (req, res) => {
+app.post('/urls', async (req, res) => {
   await ShortUrl.create({ full: req?.body?.fullUrl, userId:req?.body?.userId })
-  const shortUrls = await ShortUrl.find({userId:req?.body?.userId},{'full':1, 'short':1,"createdAt": 1, "_id": 0}).sort({createdAt: -1})
-  res.send(shortUrls)
+  if (shortUrl == null) return res.sendStatus(400)
+  res.sendStatus(200)
 })
 
-app.get('/:shortUrl', async (req, res) => {
+app.get('/urls/:shortUrl', async (req, res) => {
   const shortUrl = await ShortUrl.findOne({ short: req?.params?.shortUrl })
   if (shortUrl == null) return res.sendStatus(404)
-
-  shortUrl.clicks++
-  shortUrl.save()
-
   res.redirect(shortUrl.full)
 })
 
