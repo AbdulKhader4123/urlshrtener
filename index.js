@@ -18,8 +18,17 @@ mongoose.connect(`mongodb+srv://abuka:${process.env.passkey}@cluster0.ltdpswl.mo
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/urls', async (req, res) => {
-  const shortUrls = await ShortUrl.find({userId:req?.query?.userId || ""},{'full':1, 'short':1, "createdAt": 1, "_id": 0}).sort({createdAt: -1})
-  res.send(shortUrls)
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = parseInt(req.query.offset) || 1;
+  delete req.query.limit;
+  delete req.query.offset;
+  const filter = req.query || {};
+  const shortUrls = await ShortUrl.find(filter, {'full':1, 'short':1, "createdAt": 1, "_id": 0})
+  .skip(limit * offset - limit)
+  .limit(limit)
+  .sort({createdAt: -1})
+  const totalCount = await ShortUrl.countDocuments(filter);
+  res.send({ totalCount, shortUrls });
 })
 
 app.post('/urls', async (req, res) => {
